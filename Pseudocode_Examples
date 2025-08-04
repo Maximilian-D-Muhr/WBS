@@ -1,0 +1,107 @@
+START Set Input input_file = student_scores.csv 
+Import list student_scores from input_file Count rows  
+set variable = number_rows set total_score = 0  
+
+LOOP  by number of rows (for each score in student_scores)
+total_score = total_score + score 
+END LOOP 
+
+set result = total_score / number_rows Print "Average score of „File-Name“ is: result"
+END 
+
+
+
+START
+Input number
+Set is_prime = true
+
+IF number <= 1
+Set is_prime = false
+ELSE
+LOOP i = 2 to number - 1
+IF number mod i = 0
+Set is_prime = false
+        BREAK
+END IF
+END LOOP
+END IF
+
+IF is_prime = true
+    Print "Prime"
+  ELSE
+    Print "Not Prime"
+END IF
+END
+
+
+
+START 
+GET list of Items with item_price and item_number and item_stock 
+Set waiting for TIMEOUT = 60 seconds 
+Setup complete = True  
+
+IF Setup complete = True 
+Print: „Ready, please select a number“  
+WAIT for user_input  
+
+IF user_input = cancel_button
+GOTO TIMEOUT_ERROR  
+
+// --- VALIDATE SELECTED ITEM --- 
+set user_input_number Verify user_input_number against item_number  
+If user_input-Number is matching item_number is true proceed 
+else print: „Error invalid number, try another number“ 
+
+WAIT up to TIMEOUT for new user input and proceed with CHECK USER-INPUT  
+
+PROCEED user_input has matched item_number, set item_number status valid  
+Check item stock is >0 if true print „item_price“ 
+if false print: „Item out of stock, please select another number“ 
+
+WAIT up to TIMEOUT for new user input and proceed with CHECK USER-INPUT  
+
+// --- SELECT PAYMENT  --- 
+Show User Dialog Payment method, print: „For payment with coins please insert first coin, for contactless payment please select #“  
+
+WAIT up to TIMEOUT for valid User Input user selecting # OR inserting coins   
+
+if coin insert start proceed with A if user select # proceed with B  
+else TIMEOUT ERROR  
+
+// --- PROCEED A: COIN PAYMENT --- 
+PROCEED_A
+current_balance = coin value 
+remaining_balance = item_price - current_balance
+If remaining_balance >0 print „Still to pay in coins: remaining_balance to get „item number““ and LOOP COINS 
+else Calculate number of coins for change give out coins for change AND PROCEED GIVE ITEM 
+
+LOOP COINS WAIT up to TIMEOUT to receive next coin“ If next coin input value coin plus current balance 
+If remaining balance is >0 print „Still to pay in coins: remaining balance to get „item number““  
+
+WAIT up to TIMEOUT for next coin
+IF TIMEOUT → GOTO TIMEOUT_ERROR
+
+ELSE current_balance = current_balance + coin_value 
+END LOOP IF remaining_balance is <=0 
+Calculate number of coins for change 
+Set change = current_balance - item_price give out coins for change 
+AND PROCEED GIVE ITEM  
+
+// --- PROCEED B: CASHLESS PAYMENT --- 
+PROCEED_B  Print: „Please tap your card or phone on the payment display and follow instructions“ 
+
+WAIT up to TIMEOUT for payment status is true from payment device. 
+If payment status is true PROCEED with GIVE ITEM 
+if false TIMEOUT ERROR  
+‚
+// --- GIVE ITEM UPDATE STOCK --- 
+GIVE ITEM Start motor of Box „Item_number“
+Print: Enjoy your Item_number“ 
+Update Stock in list of Items by reducing availability of item by one  
+
+// --- TIMEOUT OR CANCEL --- 
+TIMEOUT ERROR Print „Process will be canceled please try again“ 
+if any coins have been inserted output all coins 
+wait 10 seconds, print: Welcome please select a number“ 
+GOTO START  
+END
