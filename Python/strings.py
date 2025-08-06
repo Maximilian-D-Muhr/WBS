@@ -13,12 +13,12 @@ print(bio[:10])
 for char in first_name:
     print(char)
 
-# Test
-for char in last_name:
-    print(char)
+# Test with Item instead Char as placeholder
+for item in last_name:
+    print(item)
 
 # --- Länge eines Strings ---
-print(len(bio))
+print("number of characters in bio:",len(bio))
 
 # --- Substrings prüfen ---
 print("Python" in bio)       # True oder False
